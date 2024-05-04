@@ -1,24 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import { ProductsProvider } from './Context/ProductsContext';
+import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Details } from './Details';
+import { Header } from './Header';
+import { Filters } from './Filters';
+import { Items } from './Items';
 
+export const URL = 'https://cdn.mybestbrands.de';
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <AppLayout />,
+    children: [
+      {
+        path: '/',
+        element: <Home />,
+      },
+      {
+        path: '/details/:itemID',
+        element: <Details />,
+      },
+    ],
+  },
+]);
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <ProductsProvider>
+        <RouterProvider router={router} />
+      </ProductsProvider>
     </div>
+  );
+}
+function AppLayout() {
+  return (
+    <>
+      <Header />
+      <Outlet />
+    </>
+  );
+}
+
+export function Home() {
+  return (
+    <>
+      <Filters />
+      <Items />
+    </>
   );
 }
 
